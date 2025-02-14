@@ -15,13 +15,8 @@ public class TransformMesureTest {
         Mesure mesureCelsius = new Mesure("CAP001", 25.0, LocalDateTime.now());
 
         Mesure mesureFahrenheit = TransformMesure.celsiusToFahrenheit(mesureCelsius);
-
-        // Calcul attendu : (25 * 9/5) + 32 = 77.0°F
         double expectedFahrenheit = 77.0;
-
-        // Vérification de la valeur transformée
         assertEquals(expectedFahrenheit, mesureFahrenheit.valeur(), 0.0001, "25°C doit être converti en 77°F");
-        // Vérification que le capteurId et le timestamp sont conservés
         assertEquals(mesureCelsius.capteurId(), mesureFahrenheit.capteurId(), "L'id du capteur doit rester le même");
         assertEquals(mesureCelsius.timestamp(), mesureFahrenheit.timestamp(), "Le timestamp doit rester le même");
     }
@@ -30,7 +25,6 @@ public class TransformMesureTest {
     void testPascalToBar() {
         Mesure mesurePascal = new Mesure("CAP002", 101325.0, LocalDateTime.now());
 
-        // Transformation en Bar
         Mesure mesureBar = TransformMesure.pascalToBar(mesurePascal);
 
         // Calcul attendu : 101325 / 100000 = 1.01325 Bar

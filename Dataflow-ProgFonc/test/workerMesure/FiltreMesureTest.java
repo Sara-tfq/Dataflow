@@ -1,9 +1,8 @@
-package test;
+package workerMesure;
 
 import org.junit.jupiter.api.Test;
 import source.Capteur;
 import source.Mesure;
-import transformateur.MesureFiltre;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -36,7 +35,7 @@ class FiltreMesureTest {
         Mesure m6 = new Mesure("3", 50.0, LocalDateTime.now());  // Capteur de type "Humidité" => rejetée
         List<Mesure> mesures = Arrays.asList(m1, m2, m3, m4, m5, m6);
 
-        List<Mesure> filteredTemperature = MesureFiltre.filtrerTemperature(mesures, capteursMap, 30.0, 10.0);
+        List<Mesure> filteredTemperature = FiltreMesure.filtrerTemperature(mesures, capteursMap, 30.0, 10.0);
 
         // Vérification du résultat : on attend que m1, m2, m4 et m5 soient retenues
         assertEquals(4, filteredTemperature.size(), "Le nombre de mesures filtrées doit être 4");
@@ -68,7 +67,7 @@ class FiltreMesureTest {
         Mesure m5 = new Mesure("3", 10.0, LocalDateTime.now());  // Type "Température" => rejetée
         List<Mesure> mesures = Arrays.asList(m1, m2, m3, m4, m5);
 
-        List<Mesure> filteredHumidite = MesureFiltre.filtrerHumidite(mesures, capteursMap, 80.0, 20.0);
+        List<Mesure> filteredHumidite = FiltreMesure.filtrerHumidite(mesures, capteursMap, 80.0, 20.0);
 
         // Vérification du résultat : on attend que m1, m2 et m4 soient retenues
         assertEquals(3, filteredHumidite.size(), "Le nombre de mesures filtrées doit être 3");
@@ -99,7 +98,7 @@ class FiltreMesureTest {
         Mesure m5 = new Mesure("3", 80.0, LocalDateTime.now());   // Type "Température" => rejetée
         List<Mesure> mesures = Arrays.asList(m1, m2, m3, m4, m5);
 
-        List<Mesure> filteredPression = MesureFiltre.filtrerPression(mesures, capteursMap, 105.0, 95.0);
+        List<Mesure> filteredPression = FiltreMesure.filtrerPression(mesures, capteursMap, 105.0, 95.0);
 
         // Vérification du résultat : on attend que m1, m2 et m4 soient retenues
         assertEquals(3, filteredPression.size(), "Le nombre de mesures filtrées doit être 3");
