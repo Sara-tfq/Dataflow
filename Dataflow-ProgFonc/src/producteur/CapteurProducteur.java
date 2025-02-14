@@ -3,7 +3,6 @@ package producteur;
 import source.Capteur;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CapteurProducteur {
@@ -16,7 +15,7 @@ public class CapteurProducteur {
                         TYPES[i % TYPES.length],
                         LOCALISATIONS[i % LOCALISATIONS.length]
                 ))
-                .collect(Collectors.toList());
+                .toList();
     }
 }
 
