@@ -1,9 +1,9 @@
-package test;
+package workerMesure;
 
 import org.junit.jupiter.api.Test;
 import source.Capteur;
 import source.Mesure;
-import transformateur.MesureFiltre;
+import workerMesure.FiltreMesure;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -25,9 +25,7 @@ class FiltreMesureTest {
         Map<String, Capteur> capteursMap = capteurs.stream()
                 .collect(Collectors.toMap(Capteur::id, c -> c));
 
-        // Création de mesures pour le filtrage de la température
-        // Seuils : supThreshold = 30.0 et infThreshold = 10.0
-        // On attend que les mesures dont la valeur > 30.0 ou < 10.0 soient retenues.
+
         Mesure m1 = new Mesure("1", 35.0, LocalDateTime.now());  // > 30.0 => retenue
         Mesure m2 = new Mesure("1", 8.0, LocalDateTime.now());   // < 10.0 => retenue
         Mesure m3 = new Mesure("1", 20.0, LocalDateTime.now());  // entre 10 et 30 => rejetée
@@ -36,9 +34,10 @@ class FiltreMesureTest {
         Mesure m6 = new Mesure("3", 50.0, LocalDateTime.now());  // Capteur de type "Humidité" => rejetée
         List<Mesure> mesures = Arrays.asList(m1, m2, m3, m4, m5, m6);
 
-        List<Mesure> filteredTemperature = MesureFiltre.filtrerTemperature(mesures, capteursMap, 30.0, 10.0);
 
-        // Vérification du résultat : on attend que m1, m2, m4 et m5 soient retenues
+        List<Mesure> filteredTemperature = FiltreMesure.filtrerTemperature(
+                mesures.stream(), capteursMap, 30.0, 10.0);
+
         assertEquals(4, filteredTemperature.size(), "Le nombre de mesures filtrées doit être 4");
         assertTrue(filteredTemperature.contains(m1));
         assertTrue(filteredTemperature.contains(m2));
@@ -50,7 +49,7 @@ class FiltreMesureTest {
 
     @Test
     void testFiltrerHumidite() {
-        // Création de capteurs
+
         Capteur capteur1 = new Capteur("1", "Humidité", "Paris");
         Capteur capteur2 = new Capteur("2", "Humidité", "Lyon");
         Capteur capteur3 = new Capteur("3", "Température", "Marseille");
@@ -58,9 +57,6 @@ class FiltreMesureTest {
         Map<String, Capteur> capteursMap = capteurs.stream()
                 .collect(Collectors.toMap(Capteur::id, c -> c));
 
-        // Création de mesures pour le filtrage de l'humidité
-        // Seuils : supThreshold = 80.0 et infThreshold = 20.0
-        // On retient les mesures > 80.0 ou < 20.0.
         Mesure m1 = new Mesure("1", 85.0, LocalDateTime.now());  // > 80.0 => retenue
         Mesure m2 = new Mesure("1", 15.0, LocalDateTime.now());  // < 20.0 => retenue
         Mesure m3 = new Mesure("1", 50.0, LocalDateTime.now());  // entre 20 et 80 => rejetée
@@ -68,7 +64,8 @@ class FiltreMesureTest {
         Mesure m5 = new Mesure("3", 10.0, LocalDateTime.now());  // Type "Température" => rejetée
         List<Mesure> mesures = Arrays.asList(m1, m2, m3, m4, m5);
 
-        List<Mesure> filteredHumidite = MesureFiltre.filtrerHumidite(mesures, capteursMap, 80.0, 20.0);
+        List<Mesure> filteredHumidite = FiltreMesure.filtrerHumidite(
+                mesures.stream(), capteursMap, 80.0, 20.0);
 
         // Vérification du résultat : on attend que m1, m2 et m4 soient retenues
         assertEquals(3, filteredHumidite.size(), "Le nombre de mesures filtrées doit être 3");
@@ -99,7 +96,8 @@ class FiltreMesureTest {
         Mesure m5 = new Mesure("3", 80.0, LocalDateTime.now());   // Type "Température" => rejetée
         List<Mesure> mesures = Arrays.asList(m1, m2, m3, m4, m5);
 
-        List<Mesure> filteredPression = MesureFiltre.filtrerPression(mesures, capteursMap, 105.0, 95.0);
+        List<Mesure> filteredPression = FiltreMesure.filtrerPression(
+                mesures.stream(), capteursMap, 105.0, 95.0);
 
         // Vérification du résultat : on attend que m1, m2 et m4 soient retenues
         assertEquals(3, filteredPression.size(), "Le nombre de mesures filtrées doit être 3");
