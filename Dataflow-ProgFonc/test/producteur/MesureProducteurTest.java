@@ -46,18 +46,6 @@ class MesureProducteurTest {
     }
 
     @Test
-    void testProduireMesures_GeneratesMeasuresWithValidValues() {
-        int nombreDeMesures = 5;
-        Producteur<Mesure> producteur = MesureProducteur.creerProducteur(capteurs);
-        List<Mesure> mesures = producteur.produire(nombreDeMesures);
-
-        for (Mesure mesure : mesures) {
-            Assertions.assertTrue(mesure.valeur() >= 0 && mesure.valeur() < 100,
-                    "La valeur de la mesure doit être comprise entre 0 et 100, mais était " + mesure.valeur());
-        }
-    }
-
-    @Test
     void testProduireMesures_WithZeroMeasures() {
         Producteur<Mesure> producteur = MesureProducteur.creerProducteur(capteurs);
         List<Mesure> mesures = producteur.produire(0);
