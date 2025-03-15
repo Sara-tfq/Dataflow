@@ -6,8 +6,7 @@ import source.Capteur;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class FiltreCapteurTest {
 
@@ -15,10 +14,10 @@ class FiltreCapteurTest {
     void testFiltrerParType() {
         Capteur capteur1 = new Capteur("1", "Température", "Paris");
         Capteur capteur2 = new Capteur("2", "Humidité", "Nice");
-        Capteur capteur3 = new Capteur("3","Température", "Toulouse");
+        Capteur capteur3 = new Capteur("3", "Température", "Toulouse");
 
         Stream<Capteur> capteurs = Stream.of(capteur1, capteur2, capteur3);
-        List<Capteur> result = FiltreCapteur.filtrerParType(capteurs, "Température").toList();
+        List<Capteur> result = FiltreCapteur.filtrerParType(capteurs, "Température");
 
         assertEquals(2, result.size());
         assertTrue(result.contains(capteur1));
@@ -29,10 +28,10 @@ class FiltreCapteurTest {
     void testFiltrerParLocalisation() {
         Capteur capteur1 = new Capteur("1", "Humidité", "Nice");
         Capteur capteur2 = new Capteur("2", "Humidité", "Valbonne");
-        Capteur capteur3 = new Capteur("3","Température", "Nice");
+        Capteur capteur3 = new Capteur("3", "Température", "Nice");
 
         Stream<Capteur> capteurs = Stream.of(capteur1, capteur2, capteur3);
-        List<Capteur> result = FiltreCapteur.filtrerParLocalisation(capteurs, "Nice").toList();
+        List<Capteur> result = FiltreCapteur.filtrerParLocalisation(capteurs, "Nice");
 
         assertEquals(2, result.size());
         assertTrue(result.contains(capteur1));
@@ -46,7 +45,7 @@ class FiltreCapteurTest {
         Capteur capteur3 = new Capteur("3", "Pression", "Valbonne");
 
         Stream<Capteur> capteurs = Stream.of(capteur1, capteur2, capteur3);
-        List<Capteur> result = FiltreCapteur.filtrerParTypeEtLocalisation(capteurs, "Pression", "Valbonne").toList();
+        List<Capteur> result = FiltreCapteur.filtrerParTypeEtLocalisation(capteurs, "Pression", "Valbonne");
 
         assertEquals(2, result.size());
         assertTrue(result.contains(capteur1));

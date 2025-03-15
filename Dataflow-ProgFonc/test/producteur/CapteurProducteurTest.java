@@ -1,29 +1,34 @@
 package producteur;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Assertions;
 import source.Capteur;
+import source.Mesure;
+import utils.Producteur;
 
 import java.util.List;
 import java.util.Set;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
-
-public class CapteurProducteurTest {
+class CapteurProducteurTest {
 
     @Test
-    public void testGenererCapteurs_Taille() {
+    void testProduireCapteurs_Taille() {
         int nombre = 10;
-        List<Capteur> capteurs = CapteurProducteur.genererCapteurs(nombre);
-        System.out.println("Liste des capteurs : " +  capteurs);
+        Producteur<Capteur> producteur = CapteurProducteur.creerProducteur();
+        List<Capteur> capteurs = producteur.produire(nombre);
+
         Assertions.assertNotNull(capteurs, "La liste des capteurs ne doit pas être nulle");
         Assertions.assertEquals(nombre, capteurs.size(), "Le nombre de capteurs généré doit être égal à " + nombre);
     }
 
     @Test
-    public void testGenererCapteurs_AttributsNonNull() {
+    void testProduireCapteurs_AttributsNonNull() {
         int nombre = 5;
-        List<Capteur> capteurs = CapteurProducteur.genererCapteurs(nombre);
+        Producteur<Capteur> producteur = CapteurProducteur.creerProducteur();
+        List<Capteur> capteurs = producteur.produire(nombre);
 
         capteurs.forEach(capteur -> {
             Assertions.assertNotNull(capteur.id(), "L'identifiant du capteur ne doit pas être nul");
@@ -33,15 +38,14 @@ public class CapteurProducteurTest {
     }
 
     @Test
-    public void testGenererCapteurs_TypesEtLocalisationsValides() {
+    void testProduireCapteurs_TypesEtLocalisationsValides() {
         int nombre = 15;
-        List<Capteur> capteurs = CapteurProducteur.genererCapteurs(nombre);
+        Producteur<Capteur> producteur = CapteurProducteur.creerProducteur();
+        List<Capteur> capteurs = producteur.produire(nombre);
 
-        // Liste des types et localisations attendus
-        Set<String> typesAttendus = Set.of("Température", "Humidité", "Pression");
-        Set<String> localisationsAttendus = Set.of("Paris", "Lyon", "Marseille");
+        Set<String> typesAttendus = Set.of("Température", "Humidité", "Pression", "CO2");
+        Set<String> localisationsAttendus = Set.of("Bâtiment A", "Bâtiment B", "Serre Extérieure");
 
-        // Vérifie que chaque capteur a un type et une localisation valide
         capteurs.forEach(capteur -> {
             Assertions.assertTrue(typesAttendus.contains(capteur.type()),
                     "Le type du capteur (" + capteur.type() + ") n'est pas valide");
@@ -51,16 +55,16 @@ public class CapteurProducteurTest {
     }
 
     @Test
-    public void testGenererCapteurs_UniqueId() {
+    void testProduireCapteurs_UniqueId() {
         int nombre = 20;
-        List<Capteur> capteurs = CapteurProducteur.genererCapteurs(nombre);
+        Producteur<Capteur> producteur = CapteurProducteur.creerProducteur();
+        List<Capteur> capteurs = producteur.produire(nombre);
 
-        // Récupère les identifiants et s'assure qu'il n'y a pas de doublons
         List<String> ids = capteurs.stream()
                 .map(Capteur::id)
                 .collect(Collectors.toList());
         long distinctCount = ids.stream().distinct().count();
         Assertions.assertEquals(nombre, distinctCount, "Chaque capteur doit avoir un identifiant unique");
     }
-
 }
+

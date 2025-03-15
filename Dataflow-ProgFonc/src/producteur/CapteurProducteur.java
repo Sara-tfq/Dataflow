@@ -1,21 +1,19 @@
 package producteur;
 
 import source.Capteur;
+import utils.Producteur;
 
-import java.util.List;
-import java.util.stream.IntStream;
+import java.util.Random;
 
 public class CapteurProducteur {
-    private static final String[] TYPES = {"Température", "Humidité", "Pression"};
-    private static final String[] LOCALISATIONS = {"Paris", "Lyon", "Marseille"};
+    private static final String[] TYPES = {"Température", "Humidité", "Pression", "CO2"};
+    private static final String[] LOCALISATIONS = {"Bâtiment A", "Bâtiment B", "Serre Extérieure"};
+    private static final Random RANDOM = new Random();
 
-    public static List<Capteur> genererCapteurs(int nombre) {
-        return IntStream.range(0, nombre)
-                .mapToObj(i -> Capteur.generate(
-                        TYPES[i % TYPES.length],
-                        LOCALISATIONS[i % LOCALISATIONS.length]
-                ))
-                .toList();
+    public static Producteur<Capteur> creerProducteur() {
+        return new Producteur<>(() -> Capteur.generate(
+                TYPES[RANDOM.nextInt(TYPES.length)],
+                LOCALISATIONS[RANDOM.nextInt(LOCALISATIONS.length)]
+        ));
     }
 }
-
